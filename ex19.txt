@@ -1,0 +1,109 @@
+--for Either monad
+monad laws (1)
+return a >>= k
+= Right a >>= k
+= k a
+
+monad laws (2)
+Left a >>= return = Left a
+
+Right a >>= return
+= return a
+= Right a
+
+monad laws (3)
+Left a >>= (\x -> k x >>= h)
+= Left a
+= Left a >>= h
+= (Left a >>= k) >>= h
+
+Right a >>= (\x -> k x >>= h)
+= k a >>= h
+= (return a >>= k) >>= h
+= (Right a >>= k) >>= h
+
+
+
+
+--for list monad
+give : xs = return a , x = a , f = k
+
+monad laws (1)
+return a >>= k = k a
+
+xs >>= f
+= [y | x <- xs, y <- f x]
+= [y | a <- xs, y <- k a ]
+= k a
+
+monad laws (2)
+m >>= return = m
+
+xs >>= return
+= return x
+= return a
+= xs
+
+monad laws (3)
+m >>= (\x -> k x >>= h) = (m >>= k) >>= h
+
+xs >>= (\x -> f x >>= h) 
+= (xs >>= f) >>= h
+= k a >>= h
+= (return a >>= k) >>= h
+= (xs >>= k) >>= h
+= (m >>= k) >>= h
+
+--for (-> r) monad
+
+monad laws (1)
+return a >>= k = k a
+give : return = f , a = r
+
+f a >>= k
+= \r -> k (f r) r
+= \a -> k (return a) a
+= k (return a)
+= k a
+
+
+monad laws (2)
+give : f = m , k = return
+
+m >>= return = m
+f >>= k 
+= \r -> k (f r) r
+= \r -> return (f r) $ r 
+= \r -> f r $ r
+= \r -> m r $ r
+= m
+
+monad laws (3)
+m >>= (\x -> k x >>= h) = (m >>= k) >>= h
+
+f >>= (\x -> k x >>= h) = (f >>= k) >>= h
+(r -> f) >>= (\x -> k x >>= h)
+= k f >>= h
+= (return f >>= k) >>= h
+= ((r -> f) >>= k) >>= h 
+
+--for (,) a monad
+
+monad laws (1)
+return b >>= k
+= (a,b) >>= k
+= k b
+
+monad laws (2)
+(a,b) >>= return
+= return b
+= (a,b)
+
+monad laws (3)
+(a,b) >>= (\x -> k x >>= h)
+= k b >>= h
+= (return b >>= k) >>= h
+= ((a,b) >>= k) >>= h
+ 
+
+
